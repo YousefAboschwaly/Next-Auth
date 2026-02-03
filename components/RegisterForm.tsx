@@ -53,7 +53,7 @@ export default function RegisterForm({ countries }: { countries: ICountry[] }) {
       password: "",
       confirmPassword: "",
       phoneNumber: "",
-      countryCode: "+1",
+      countryCode: "+20",
     },
   });
 
@@ -77,9 +77,10 @@ console.log(res)
       return;
     }
     if (res.success ) {
+      localStorage.setItem("userToken", res.data.token);
       toast.success(`${res.data.message || "Registered successfully"}`);
       console.log("Registered successfully", res.data);
-      router.push("/login");
+      router.push("/verify");
     }
   };
 
