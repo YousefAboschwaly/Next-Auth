@@ -1,7 +1,6 @@
 "use server";
 import { ICountry, IRestCountryAPI } from "@/types";
 
-
 export async function getCountries(): Promise<ICountry[]> {
   try {
     const res = await fetch(
@@ -12,9 +11,10 @@ export async function getCountries(): Promise<ICountry[]> {
       },
     );
 
-  
+    if (!res.ok) {
+      throw new Error(`rest countries failed: ${res.status} ${res.statusText}`);
+    }
     const data: IRestCountryAPI[] = await res.json();
-
     const formatted: ICountry[] = data
       .map((c) => ({
         name: c.name?.common || "",

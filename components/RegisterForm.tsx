@@ -26,7 +26,7 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Check, ChevronsUpDown } from "lucide-react";
+import { Check, ChevronsUpDown, Eye, EyeOff } from "lucide-react";
 import { useMemo, useState } from "react";
 import { useForm } from "react-hook-form";
 
@@ -34,11 +34,14 @@ import { cn } from "@/lib/utils";
 import { type RegisterData, RegisterSchema } from "@/schema";
 import { ICountry } from "@/types";
 import Image from "next/image";
-import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 export default function RegisterForm({ countries }: { countries: ICountry[] }) {
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const [open, setOpen] = useState(false);
+  const router = useRouter();
 
   const form = useForm<RegisterData>({
     resolver: zodResolver(RegisterSchema),
@@ -120,14 +123,27 @@ export default function RegisterForm({ countries }: { countries: ICountry[] }) {
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel>Password</FormLabel>
-                      <FormControl>
-                        <Input
-                          type="password"
-                          placeholder="Password"
-                          {...field}
-                          className="h-12 rounded-xl"
-                        />
-                      </FormControl>
+                      <div className="relative">
+                        <FormControl>
+                          <Input
+                            type={showPassword ? "text" : "password"}
+                            placeholder="Enter your password"
+                            {...field}
+                            className="h-12 rounded-xl"
+                          />
+                        </FormControl>
+                        <button
+                          type="button"
+                          onClick={() => setShowPassword(!showPassword)}
+                          className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground transition-colors cursor-pointer"
+                        >
+                          {showPassword ? (
+                            <EyeOff className="w-5 h-5" />
+                          ) : (
+                            <Eye className="w-5 h-5" />
+                          )}
+                        </button>
+                      </div>
                       <FormMessage />
                     </FormItem>
                   )}
@@ -138,14 +154,29 @@ export default function RegisterForm({ countries }: { countries: ICountry[] }) {
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel>Confirm Password</FormLabel>
-                      <FormControl>
-                        <Input
-                          type="password"
-                          placeholder="Confirm"
-                          {...field}
-                          className="h-12 rounded-xl"
-                        />
-                      </FormControl>
+                      <div className="relative">
+                        <FormControl>
+                          <Input
+                            type={showConfirmPassword ? "text" : "password"}
+                            placeholder="Confirm"
+                            {...field}
+                            className="h-12 rounded-xl"
+                          />
+                        </FormControl>
+                        <button
+                          type="button"
+                          onClick={() =>
+                            setShowConfirmPassword(!showConfirmPassword)
+                          }
+                          className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground transition-colors cursor-pointer"
+                        >
+                          {showConfirmPassword ? (
+                            <EyeOff className="w-5 h-5" />
+                          ) : (
+                            <Eye className="w-5 h-5" />
+                          )}
+                        </button>
+                      </div>
                       <FormMessage />
                     </FormItem>
                   )}
@@ -153,91 +184,95 @@ export default function RegisterForm({ countries }: { countries: ICountry[] }) {
               </div>
 
               <div className="grid grid-cols-3 gap-2">
-                <FormField
-                  control={form.control}
-                  name="countryCode"
-                  render={({ field }) => (
-                    <FormItem className="flex flex-col">
-                      <FormLabel className="mb-1">Country</FormLabel>
-                      <Popover open={open} onOpenChange={setOpen}>
-                        <PopoverTrigger asChild>
-                          <FormControl>
-                            <Button
-                              variant="outline"
-                              role="combobox"
-                              className={cn(
-                                "w-full h-12 rounded-xl justify-between px-3 font-normal",
-                                !field.value && "text-muted-foreground",
-                              )}
-                            >
-                              <div className="flex items-center gap-2 overflow-hidden">
-                                {selectedCountry && (
-                                  <Image
-                                    key={selectedCountry.code}
-                                    width={16}
-                                    height={12}
-                                    src={selectedCountry.flag}
-                                    alt=""
-                                    className="w-4 h-3 object-cover rounded-sm shrink-0"
-                                  />
+
+                <div className="col-span-1 h-full">
+                  <FormField
+                    control={form.control}
+                    name="countryCode"
+                    render={({ field }) => (
+                      <FormItem className="flex flex-col">
+                        <FormLabel className="mb-1">Country</FormLabel>
+                        <Popover open={open} onOpenChange={setOpen}>
+                          <PopoverTrigger asChild>
+                            <FormControl>
+                              <Button
+                                variant="outline"
+                                role="combobox"
+                                className={cn(
+                                  "w-full h-12 rounded-xl justify-between px-3 font-normal cursor-pointer",
+                                  !field.value && "text-muted-foreground",
                                 )}
-                                <span className="truncate">
-                                  {field.value || "Code"}
-                                </span>
-                              </div>
-                              <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
-                            </Button>
-                          </FormControl>
-                        </PopoverTrigger>
-                        <PopoverContent className="w-75 p-0" align="start">
-                          <Command>
-                            <CommandInput placeholder="Search country or code..." />
-                            <CommandList>
-                              <CommandEmpty>No country found.</CommandEmpty>
-                              <CommandGroup>
-                                {countries.map((c, i) => (
-                                  <CommandItem
-                                    value={`${c.name} ${c.code}`}
-                                    key={`${c.code}-${i}`}
-                                    onSelect={() => {
-                                      form.setValue("countryCode", c.code);
-                                      setOpen(false);
-                                    }}
-                                  >
-                                    <Check
-                                      className={cn(
-                                        "mr-2 h-4 w-4",
-                                        c.code === field.value
-                                          ? "opacity-100"
-                                          : "opacity-0",
-                                      )}
-                                    />
+                              >
+                                <div className="flex items-center gap-2 overflow-hidden">
+                                  {selectedCountry && (
                                     <Image
-                                      key={`${c.code}-${i}`}
-                                      width={16}
-                                      height={12}
-                                      src={c.flag}
+                                      key={selectedCountry.code}
+                                      width={30}
+                                      height={20}
+                                      src={selectedCountry.flag}
                                       alt=""
-                                      className="w-4 h-3 object-cover rounded-sm mr-2"
+                                      className=" object-cover shrink-0"
                                     />
-                                    <span className="flex-1 truncate">
-                                      {c.name}
-                                    </span>
-                                    <span className="text-muted-foreground ml-2">
-                                      {c.code}
-                                    </span>
-                                  </CommandItem>
-                                ))}
-                              </CommandGroup>
-                            </CommandList>
-                          </Command>
-                        </PopoverContent>
-                      </Popover>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-                <div className="col-span-2">
+                                  )}
+                                  <span className="truncate">
+                                    {field.value || "Code"}
+                                  </span>
+                                </div>
+                                <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                              </Button>
+                            </FormControl>
+                          </PopoverTrigger>
+                          <PopoverContent className="w-75 p-0" align="start">
+                            <Command>
+                              <CommandInput placeholder="Search country or code..." />
+                              <CommandList>
+                                <CommandEmpty>No country found.</CommandEmpty>
+                                <CommandGroup>
+                                  {countries.map((c, i) => (
+                                    <CommandItem
+                                      value={`${c.name} ${c.code}`}
+                                      key={`${c.code}-${i}`}
+                                      onSelect={() => {
+                                        form.setValue("countryCode", c.code);
+                                        setOpen(false);
+                                      }}
+                                    >
+                                      <Check
+                                        className={cn(
+                                          "mr-2 h-4 w-4",
+                                          c.code === field.value
+                                            ? "opacity-100"
+                                            : "opacity-0",
+                                        )}
+                                      />
+                                      <Image
+                                        key={`${c.code}-${i}`}
+                                        width={30}
+                                        height={20}
+                                        src={c.flag}
+                                        alt=""
+                                        className=" object-cover rounded-sm mr-2"
+                                      />
+                                      <span className="flex-1 truncate">
+                                        {c.name}
+                                      </span>
+                                      <span className="text-muted-foreground ml-2">
+                                        {c.code}
+                                      </span>
+                                    </CommandItem>
+                                  ))}
+                                </CommandGroup>
+                              </CommandList>
+                            </Command>
+                          </PopoverContent>
+                        </Popover>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                </div>
+
+                <div className="col-span-2 pt-1">
                   <FormField
                     control={form.control}
                     name="phoneNumber"
@@ -270,10 +305,11 @@ export default function RegisterForm({ countries }: { countries: ICountry[] }) {
               <p className="text-center text-sm text-gray-500">
                 Already have an account?{" "}
                 <button
+                  onClick={() => router.push("/login")}
                   type="button"
                   className="text-[#be968e] font-medium hover:underline"
                 >
-                  <Link href="/login">Sign In</Link>
+                  Sign In
                 </button>
               </p>
             </form>
