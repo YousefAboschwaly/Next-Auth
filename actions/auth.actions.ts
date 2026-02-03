@@ -80,3 +80,31 @@ export async function registerAction(data: RegisterData) {
     };
   }
 }
+
+export async function loginAction(email: string, password: string) {
+  try {
+    const formData = new FormData();
+    formData.append("email", email);
+    formData.append("password", password);
+    const res = await fetch(`${BASE_URL}/auth/login`, {
+      method: "POST",
+        headers: {
+        "Accept": "application/json",
+      },
+      body: formData,
+    }); 
+    const result = await res.json();
+    return {
+      success: res.ok,
+      ...result
+    };
+  }
+    catch (error: any) {
+    console.log(error);
+    return {
+      success: false,
+      message: error?.message || "Something went wrong",
+    };
+  }
+}
+
