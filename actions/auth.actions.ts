@@ -107,7 +107,7 @@ export async function sendVerificationCode(userToken: string) {
       return { success: false, message: "لم يتم العثور على رمز المصادقة" };
     }
     const res = await fetch(
-      `${process.env.BASE_URL}/auth/verify-email/resend-code`,
+      `${BASE_URL}/auth/verify-email/resend-code`,
       {
         method: "POST",
         headers: {

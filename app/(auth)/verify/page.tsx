@@ -9,7 +9,7 @@ import {
   InputOTPGroup,
   InputOTPSlot,
 } from "@/components/ui/input-otp";
-import { verifyEmailWithToken } from "@/actions/auth.actions";
+import { sendVerificationCode, verifyEmailWithToken } from "@/actions/auth.actions";
 import { toast } from "sonner";
 
 export default function Verify() {
@@ -32,6 +32,19 @@ export default function Verify() {
       toast.error(res.message || "Verification failed");
     }
   };
+
+  const handleResend = async () => {
+    const userToken = localStorage.getItem("userToken") || "";
+    setLoading(true);
+    const res = await sendVerificationCode(userToken);
+    if (res.success) {
+      toast.success(res.message || "Verification code resent");
+    } 
+    else {
+      toast.error(res.message || "Failed to resend code");
+    }
+    setLoading(false);
+  }
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-linear-to-br from-[#f8f4f3] to-[#fefefe] p-4">
@@ -89,11 +102,12 @@ export default function Verify() {
             <div className=" flex justify-center items-center  gap-8">
               <p className="text-center text-sm text-gray-500">
                 <button
+                onClick={handleResend}
                   type="button"
                   className="text-[#be968e] font-medium hover:underline"
                   data-testid="link-resend"
                 >
-                  Resend Code
+                  {loading ? "Resending..." : "Resend Code"}
                 </button>
               </p>
               <p className="text-center text-sm text-gray-500">
