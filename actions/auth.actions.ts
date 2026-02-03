@@ -37,8 +37,6 @@ export async function getCountries(): Promise<ICountry[]> {
   }
 }
 
-
-
 import { RegisterData } from "@/schema";
 
 const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL!;
@@ -52,15 +50,12 @@ export async function registerAction(data: RegisterData) {
     formData.append("mobile", data.phoneNumber);
     formData.append("password", data.password);
     formData.append("password_confirmation", data.confirmPassword);
-    formData.append(
-      "mobile_country_code",
-      data.countryCode.replace("+", ""),
-    );
+    formData.append("mobile_country_code", data.countryCode.replace("+", ""));
 
     const res = await fetch(`${BASE_URL}/auth/register`, {
       method: "POST",
-        headers: {
-        "Accept": "application/json",
+      headers: {
+        Accept: "application/json",
       },
       body: formData,
     });
@@ -69,11 +64,10 @@ export async function registerAction(data: RegisterData) {
 
     return {
       success: res.ok,
-      ...result
+      ...result,
     };
-    
-  } catch (error: any) {  
-    console.log(error);       
+  } catch (error: any) {
+    console.log(error);
     return {
       success: false,
       message: error?.message || "Something went wrong",
@@ -88,18 +82,17 @@ export async function loginAction(email: string, password: string) {
     formData.append("password", password);
     const res = await fetch(`${BASE_URL}/auth/login`, {
       method: "POST",
-        headers: {
-        "Accept": "application/json",
+      headers: {
+        Accept: "application/json",
       },
       body: formData,
-    }); 
+    });
     const result = await res.json();
     return {
       success: res.ok,
-      ...result
+      ...result,
     };
-  }
-    catch (error: any) {
+  } catch (error: any) {
     console.log(error);
     return {
       success: false,
@@ -108,3 +101,41 @@ export async function loginAction(email: string, password: string) {
   }
 }
 
+export async function verifyEmailWithToken(
+  formData: FormData,
+  userToken: string,
+) {
+  try {
+    const code = formData.get("code") as string;
+
+    if (!code) {
+      return { success: false, message: "يرجى إدخال كود التحقق" };
+    }
+
+    if (!userToken) {
+      return { success: false, message: "لم يتم العثور على رمز المصادقة" };
+    }
+
+    const res = await fetch(`${process.env.BASE_URL}/auth/verify-email`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/x-www-form-urlencoded",
+        Authorization: `Bearer ${userToken}`,
+      },
+      body: new URLSearchParams({ code }),
+    });
+
+    const result = await res.json();
+
+    return {
+      success: res.ok,
+      ...result,
+    };
+  } catch (error) {
+    console.error("خطأ في التحقق:", error);
+    return {
+      success: false,
+      message: "حدث خطأ في الاتصال بالخادم",
+    };
+  }
+}
