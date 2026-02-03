@@ -36,6 +36,7 @@ import { ICountry } from "@/types";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { registerAction } from "@/actions/auth.actions";
+import { toast } from "sonner";
 
 export default function RegisterForm({ countries }: { countries: ICountry[] }) {
   const [showPassword, setShowPassword] = useState(false);
@@ -63,21 +64,24 @@ export default function RegisterForm({ countries }: { countries: ICountry[] }) {
   );
   console.log(selectedCountry);
 
-const onSubmit = async (data: RegisterData) => {
-  setLoading(true);
+  const onSubmit = async (data: RegisterData) => {
+    setLoading(true);
 
-  const res = await registerAction(data);
+    const res = await registerAction(data);
+console.log(res)
+    setLoading(false);
 
-  setLoading(false);
-
-  if (!res.success) {
-    console.log(res.message);
-    return;
-  }
-
-  console.log("Registered successfully", res.data);
-  router.push("/login");
-};
+    if (!res.success) {
+      toast.error(res.message || "Registration failed");
+      console.log(res);
+      return;
+    }
+    if (res.success ) {
+      toast.success(`${res.data.message || "Registered successfully"}`);
+      console.log("Registered successfully", res.data);
+      router.push("/login");
+    }
+  };
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-linear-to-br from-[#f8f4f3] to-[#fefefe] p-4">

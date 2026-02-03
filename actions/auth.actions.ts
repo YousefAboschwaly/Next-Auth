@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 "use server";
 import { ICountry, IRestCountryAPI } from "@/types";
 
@@ -58,28 +59,24 @@ export async function registerAction(data: RegisterData) {
 
     const res = await fetch(`${BASE_URL}/auth/register`, {
       method: "POST",
+        headers: {
+        "Accept": "application/json",
+      },
       body: formData,
     });
 
     const result = await res.json();
 
-    if (!res.ok) {
-      return {
-        success: false,
-        message: result.message || "Registration failed",
-        errors: result.errors,
-      };
-    }
-    console.log(result)
-
     return {
-      success: true,
-      data: result,
+      success: res.ok,
+      ...result
     };
-  } catch {         
+    
+  } catch (error: any) {  
+    console.log(error);       
     return {
       success: false,
-      message: "Something went wrong",
+      message: error?.message || "Something went wrong",
     };
   }
 }
