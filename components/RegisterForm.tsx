@@ -69,7 +69,6 @@ export default function RegisterForm({ countries }: { countries: ICountry[] }) {
     setLoading(true);
     try {
       const res = await registerAction(data);
-      setLoading(false);
 
       if (!res.success) {
         toast.error(res.message || "Registration failed");
@@ -77,14 +76,17 @@ export default function RegisterForm({ countries }: { countries: ICountry[] }) {
       }
       if (res.success) {
         localStorage.setItem("userToken", res.data.token);
+        
     
         toast.success(res.message || "Registered successfully");
         router.push("/verify");
       }
     } catch  {
-      setLoading(false);
       toast.error("An unexpected error occurred. Please try again.");
+    }finally{
+      setLoading(false);
     }
+
   };
   return (
     <div className="min-h-screen flex items-center justify-center bg-linear-to-br from-[#f8f4f3] to-[#fefefe] p-4">

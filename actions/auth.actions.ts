@@ -1,6 +1,8 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 "use server";
 import { ICountry, IRestCountryAPI } from "@/types";
+import { LoginData, RegisterData } from "@/schema";
+
 
 export async function getCountries(): Promise<ICountry[]> {
   try {
@@ -37,7 +39,6 @@ export async function getCountries(): Promise<ICountry[]> {
   }
 }
 
-import { RegisterData } from "@/schema";
 
 const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL!;
 
@@ -75,11 +76,11 @@ export async function registerAction(data: RegisterData) {
   }
 }
 
-export async function loginAction(email: string, password: string) {
+export async function loginAction(data:LoginData) {
   try {
     const formData = new FormData();
-    formData.append("email", email);
-    formData.append("password", password);
+    formData.append("email", data.email);
+    formData.append("password", data.password);
     const res = await fetch(`${BASE_URL}/auth/login`, {
       method: "POST",
       headers: {
@@ -97,6 +98,31 @@ export async function loginAction(email: string, password: string) {
     return {
       success: false,
       message: error?.message || "Something went wrong",
+    };
+  }
+}
+
+export async function logoutAction(userToken: string) {
+  try {
+    if (!userToken) {
+      return { success: false, message: "لم يتم العثور على رمز المصادقة" };
+    } 
+    const res = await fetch(`${BASE_URL}/auth/logout`, {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${userToken}`,
+      },
+    });
+    const result = await res.json();
+    return {
+      success: res.ok,
+      ...result,
+    };
+  } catch (error) {
+    console.error("خطأ في تسجيل الخروج:", error);
+    return {
+      success: false,
+      message: "حدث خطأ في تسجيل الخروج",
     };
   }
 }
@@ -160,3 +186,32 @@ export async function verifyEmailWithToken(userToken: string, code: string) {
     };
   }
 }
+
+
+// GER THE USER DATA 
+export async function getUserData(userToken: string) {
+  try {
+    if (!userToken) {
+      return { success: false, message: "لم يتم العثور على رمز المصادقة" };
+    }
+    const res = await fetch(`${BASE_URL}/auth/user-data`, {
+      method: "GET",
+      headers: {
+        Authorization: `Bearer ${userToken}`,
+      },
+    }); 
+    const result = await res.json();
+    return {
+      success: res.ok,
+      ...result,
+    };
+  }
+    catch (error) {   
+    console.error("خطأ في جلب بيانات المستخدم:", error);
+    return {
+      success: false,
+      message: "حدث خطأ في جلب بيانات المستخدم",
+    };
+  }
+}
+

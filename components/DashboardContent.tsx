@@ -2,8 +2,7 @@
 import { useAuth } from "@/context/UserContext";
 import { redirect } from "next/navigation";
 
-
-export default  function Home() {
+export default function DashboardContent() {
 const { user } = useAuth()  
   console.log("user in Home", user);
   if (!user?.token ) return redirect("/login");
@@ -14,3 +13,6 @@ const { user } = useAuth()
       </div>
   );
 }
+
+
+
