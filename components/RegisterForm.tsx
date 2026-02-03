@@ -30,15 +30,16 @@ import { Check, ChevronsUpDown, Eye, EyeOff } from "lucide-react";
 import { useMemo, useState } from "react";
 import { useForm } from "react-hook-form";
 
+import { registerAction } from "@/actions/auth.actions";
 import { cn } from "@/lib/utils";
 import { type RegisterData, RegisterSchema } from "@/schema";
 import { ICountry } from "@/types";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import { registerAction } from "@/actions/auth.actions";
 import { toast } from "sonner";
 
 export default function RegisterForm({ countries }: { countries: ICountry[] }) {
+  
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -66,24 +67,25 @@ export default function RegisterForm({ countries }: { countries: ICountry[] }) {
 
   const onSubmit = async (data: RegisterData) => {
     setLoading(true);
+    try {
+      const res = await registerAction(data);
+      setLoading(false);
 
-    const res = await registerAction(data);
-console.log(res)
-    setLoading(false);
-
-    if (!res.success) {
-      toast.error(res.message || "Registration failed");
-      console.log(res);
-      return;
-    }
-    if (res.success ) {
-      localStorage.setItem("userToken", res.data.token);
-      toast.success(`${res.data.message || "Registered successfully"}`);
-      console.log("Registered successfully", res.data);
-      router.push("/verify");
+      if (!res.success) {
+        toast.error(res.message || "Registration failed");
+        return;
+      }
+      if (res.success) {
+        localStorage.setItem("userToken", res.data.token);
+    
+        toast.success(res.message || "Registered successfully");
+        router.push("/verify");
+      }
+    } catch  {
+      setLoading(false);
+      toast.error("An unexpected error occurred. Please try again.");
     }
   };
-
   return (
     <div className="min-h-screen flex items-center justify-center bg-linear-to-br from-[#f8f4f3] to-[#fefefe] p-4">
       <Card className="w-full max-w-md shadow-xl rounded-3xl border-0">

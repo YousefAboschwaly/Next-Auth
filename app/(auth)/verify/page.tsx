@@ -9,6 +9,8 @@ import {
   InputOTPGroup,
   InputOTPSlot,
 } from "@/components/ui/input-otp";
+import { verifyEmailWithToken } from "@/actions/auth.actions";
+import { toast } from "sonner";
 
 export default function Verify() {
   const router = useRouter();
@@ -18,7 +20,17 @@ export default function Verify() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
-    console.log(code)
+    const userToken = localStorage.getItem("userToken") || "";
+
+    const res = await verifyEmailWithToken(userToken, code);
+    console.log(res)
+    if (res.success) {
+        toast.success(res.message || "Registered successfully");
+
+      router.push("/login");
+    } else {
+      toast.error(res.message || "Verification failed");
+    }
   };
 
   return (

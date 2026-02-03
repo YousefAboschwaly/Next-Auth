@@ -101,25 +101,46 @@ export async function loginAction(email: string, password: string) {
   }
 }
 
-export async function verifyEmailWithToken(
-  formData: FormData,
-  userToken: string,
-) {
+export async function sendVerificationCode(userToken: string) {
   try {
-    const code = formData.get("code") as string;
-
-    if (!code) {
-      return { success: false, message: "يرجى إدخال كود التحقق" };
+    if (!userToken) {
+      return { success: false, message: "لم يتم العثور على رمز المصادقة" };
     }
+    const res = await fetch(
+      `${process.env.BASE_URL}/auth/verify-email/resend-code`,
+      {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${userToken}`,
+        },
+      },
+    );
+    const result = await res.json();
+    return {
+      success: res.ok,
+      ...result,
+    };
+  } catch (error) {
+    console.error("خطأ في إرسال كود التحقق:", error);
+    return {
+      success: false,
+      message: "حدث خطأ في إرسال كود التحقق",
+    };
+  }
+}
+
+export async function verifyEmailWithToken(userToken: string, code: string) {
+  try {
 
     if (!userToken) {
       return { success: false, message: "لم يتم العثور على رمز المصادقة" };
     }
+    const formData = new FormData();
+    formData.append("code", code);
 
-    const res = await fetch(`${process.env.BASE_URL}/auth/verify-email`, {
+    const res = await fetch(`${BASE_URL}/auth/verify-email`, {
       method: "POST",
       headers: {
-        "Content-Type": "application/x-www-form-urlencoded",
         Authorization: `Bearer ${userToken}`,
       },
       body: new URLSearchParams({ code }),
