@@ -1,10 +1,5 @@
 "use client"
-import { useState } from "react";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { z } from "zod";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {
   Form,
@@ -14,21 +9,20 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
+import { type LoginData, LoginSchema } from "@/schema";
+import { zodResolver } from "@hookform/resolvers/zod";
 import Link from "next/link";
+import { useState } from "react";
+import { useForm } from "react-hook-form";
 
-const loginSchema = z.object({
-  email: z.string().email("Invalid email address"),
-  password: z.string().min(1, "Password is required"),
-});
-
-type LoginData = z.infer<typeof loginSchema>;
 
 export default function Login() {
 
   const [loading, setLoading] = useState(false);
 
   const form = useForm<LoginData>({
-    resolver: zodResolver(loginSchema),
+    resolver: zodResolver(LoginSchema),
     defaultValues: {
       email: "",
       password: "",
@@ -96,7 +90,7 @@ export default function Login() {
                   type="button"
                   className="text-[#be968e] font-medium hover:underline"
                 >
-                <Link href="/signup">
+                <Link href="/register">
                   Sign Up
                 </Link>
                 </button>
