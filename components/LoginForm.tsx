@@ -46,6 +46,7 @@ export default function LoginForm() {
         <CardContent>
           <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+              
               <FormField
                 control={form.control}
                 name="email"
@@ -100,7 +101,7 @@ export default function LoginForm() {
               <Button
                 type="submit"
                 disabled={loading}
-                className="w-full h-12 bg-[#be968e] hover:bg-[#a8827a] text-white rounded-xl font-medium mt-4"
+                className="w-full h-12 bg-[#be968e] hover:bg-[#a8827a] text-white rounded-xl font-medium mt-4 cursor-pointer"
               >
                 {loading ? "Signing In..." : "Sign In"}
               </Button>
@@ -110,7 +111,7 @@ export default function LoginForm() {
                 <button
                   onClick={() => router.push("/register")}
                   type="button"
-                  className="text-[#be968e] font-medium hover:underline"
+                  className="text-[#be968e] font-medium hover:underline cursor-pointer"
                 >
                   Sign Up
                 </button>
