@@ -35,6 +35,7 @@ import { type RegisterData, RegisterSchema } from "@/schema";
 import { ICountry } from "@/types";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
+import { registerAction } from "@/actions/auth.actions";
 
 export default function RegisterForm({ countries }: { countries: ICountry[] }) {
   const [showPassword, setShowPassword] = useState(false);
@@ -62,10 +63,21 @@ export default function RegisterForm({ countries }: { countries: ICountry[] }) {
   );
   console.log(selectedCountry);
 
-  const onSubmit = async (data: RegisterData) => {
-    setLoading(true);
-    console.log("Registration data submitted:", data);
-  };
+const onSubmit = async (data: RegisterData) => {
+  setLoading(true);
+
+  const res = await registerAction(data);
+
+  setLoading(false);
+
+  if (!res.success) {
+    console.log(res.message);
+    return;
+  }
+
+  console.log("Registered successfully", res.data);
+  router.push("/login");
+};
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-linear-to-br from-[#f8f4f3] to-[#fefefe] p-4">
@@ -135,6 +147,9 @@ export default function RegisterForm({ countries }: { countries: ICountry[] }) {
                         <button
                           type="button"
                           onClick={() => setShowPassword(!showPassword)}
+                          aria-label={
+                            showPassword ? "Hide password" : "Show password"
+                          }
                           className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground transition-colors cursor-pointer"
                         >
                           {showPassword ? (
@@ -142,7 +157,7 @@ export default function RegisterForm({ countries }: { countries: ICountry[] }) {
                           ) : (
                             <Eye className="w-5 h-5" />
                           )}
-                        </button>
+                        </button>{" "}
                       </div>
                       <FormMessage />
                     </FormItem>
@@ -168,6 +183,11 @@ export default function RegisterForm({ countries }: { countries: ICountry[] }) {
                           onClick={() =>
                             setShowConfirmPassword(!showConfirmPassword)
                           }
+                          aria-label={
+                            showConfirmPassword
+                              ? "Hide password"
+                              : "Show password"
+                          }
                           className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground transition-colors cursor-pointer"
                         >
                           {showConfirmPassword ? (
@@ -175,7 +195,7 @@ export default function RegisterForm({ countries }: { countries: ICountry[] }) {
                           ) : (
                             <Eye className="w-5 h-5" />
                           )}
-                        </button>
+                        </button>{" "}
                       </div>
                       <FormMessage />
                     </FormItem>
@@ -184,7 +204,6 @@ export default function RegisterForm({ countries }: { countries: ICountry[] }) {
               </div>
 
               <div className="grid grid-cols-3 gap-2">
-
                 <div className="col-span-1 h-full">
                   <FormField
                     control={form.control}
@@ -210,7 +229,7 @@ export default function RegisterForm({ countries }: { countries: ICountry[] }) {
                                       width={30}
                                       height={20}
                                       src={selectedCountry.flag}
-                                      alt=""
+                                      alt={`${selectedCountry.name} flag`}
                                       className=" object-cover shrink-0"
                                     />
                                   )}
@@ -250,7 +269,7 @@ export default function RegisterForm({ countries }: { countries: ICountry[] }) {
                                         width={30}
                                         height={20}
                                         src={c.flag}
-                                        alt=""
+                                        alt={`${c.name} flag`}
                                         className=" object-cover rounded-sm mr-2"
                                       />
                                       <span className="flex-1 truncate">
@@ -297,7 +316,7 @@ export default function RegisterForm({ countries }: { countries: ICountry[] }) {
               <Button
                 type="submit"
                 disabled={loading}
-                className="w-full h-12 bg-[#be968e] hover:bg-[#a8827a] text-white rounded-xl font-medium mt-4"
+                className="w-full h-12 bg-[#be968e] hover:bg-[#a8827a] text-white rounded-xl font-medium mt-4 cursor-pointer"
               >
                 {loading ? "Creating Account..." : "Sign Up"}
               </Button>
@@ -307,7 +326,7 @@ export default function RegisterForm({ countries }: { countries: ICountry[] }) {
                 <button
                   onClick={() => router.push("/login")}
                   type="button"
-                  className="text-[#be968e] font-medium hover:underline"
+                  className="text-[#be968e] font-medium hover:underline cursor-pointer"
                 >
                   Sign In
                 </button>

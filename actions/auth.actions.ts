@@ -35,3 +35,51 @@ export async function getCountries(): Promise<ICountry[]> {
     ];
   }
 }
+
+
+
+import { RegisterData } from "@/schema";
+
+const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL!;
+
+export async function registerAction(data: RegisterData) {
+  try {
+    const formData = new FormData();
+
+    formData.append("name", data.fullName);
+    formData.append("email", data.email);
+    formData.append("mobile", data.phoneNumber);
+    formData.append("password", data.password);
+    formData.append("password_confirmation", data.confirmPassword);
+    formData.append(
+      "mobile_country_code",
+      data.countryCode.replace("+", ""),
+    );
+
+    const res = await fetch(`${BASE_URL}/auth/register`, {
+      method: "POST",
+      body: formData,
+    });
+
+    const result = await res.json();
+
+    if (!res.ok) {
+      return {
+        success: false,
+        message: result.message || "Registration failed",
+        errors: result.errors,
+      };
+    }
+    console.log(result)
+
+    return {
+      success: true,
+      data: result,
+    };
+  } catch {         
+    return {
+      success: false,
+      message: "Something went wrong",
+    };
+  }
+}
