@@ -35,10 +35,12 @@ import { type RegisterData, RegisterSchema } from "@/schema";
 import { ICountry } from "@/types";
 import Image from "next/image";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 export default function RegisterForm({ countries }: { countries: ICountry[] }) {
   const [loading, setLoading] = useState(false);
   const [open, setOpen] = useState(false);
+  const router = useRouter();
 
   const form = useForm<RegisterData>({
     resolver: zodResolver(RegisterSchema),
@@ -270,10 +272,11 @@ export default function RegisterForm({ countries }: { countries: ICountry[] }) {
               <p className="text-center text-sm text-gray-500">
                 Already have an account?{" "}
                 <button
+                  onClick={() => router.push("/login")}
                   type="button"
                   className="text-[#be968e] font-medium hover:underline"
                 >
-                  <Link href="/login">Sign In</Link>
+                  Sign In
                 </button>
               </p>
             </form>
