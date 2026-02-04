@@ -28,7 +28,7 @@ export function Navbar() {
                 {Nav_Links.map((link) => (
                   <li
                     key={link.name}
-                    className="flex items-center gap-2 text-secondary hover:text-gray-900 pr-3 cursor-pointer transition-colors"
+                    className="flex items-center gap-2 text-secondary hover:text-gray-900  cursor-pointer transition-colors "
                   >
                     <Image
                       src={link.icon}
@@ -37,7 +37,7 @@ export function Navbar() {
                       height={20}
                       className="w-5 h-5"
                     />
-                    <p>{link.name}</p>
+                    <p >{link.name}</p>
                   </li>
                 ))}
               </ul>
