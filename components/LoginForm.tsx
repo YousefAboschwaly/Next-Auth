@@ -43,10 +43,11 @@ export default function LoginForm() {
         return;
       }
       if (res.success) {
-        const data = await getUserData(res.data.token);
+        const userResponse = await getUserData(res.data.token);
         localStorage.setItem("userToken", res.data.token);
-        localStorage.setItem("userData", JSON.stringify(data.data));
-        setUser(data.data);
+        localStorage.setItem("userData", JSON.stringify(userResponse.data));
+        setUser(userResponse.data);
+
 
         toast.success(res.message || "Logged in successfully");
         router.push("/");
@@ -56,8 +57,6 @@ export default function LoginForm() {
     } finally {
       setLoading(false);
     }
-
-    console.log("Login data submitted:", data);
   };
 
   return (

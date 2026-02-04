@@ -6,6 +6,7 @@ type User = {
   id: string;
   name: string;
   email: string;
+  token: string;
 };
 
 type AuthContextType = {
@@ -62,7 +63,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     };
 
     fetchUser();
-  }, [ ]);
+  }, []);
 
 
 

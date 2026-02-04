@@ -1,19 +1,19 @@
 "use client"
 import { useAuth } from "@/context/UserContext";
-import { redirect } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 
 
 export default  function HomeContent() {
+  const router = useRouter();
   const { user, loading } = useAuth();
 
   useEffect(() => {
     if (!loading && !user) {
-      redirect("/login");
+      router.push("/login");
     }
-  }, [loading, user]);
+  }, [loading, user,router]);
 
-  if (!user) return null;
   return (
           <div className="">
         <h1>Welcome back, {user?.name}!</h1>

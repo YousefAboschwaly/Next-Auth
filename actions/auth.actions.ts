@@ -3,7 +3,6 @@
 import { ICountry, IRestCountryAPI } from "@/types";
 import { LoginData, RegisterData } from "@/schema";
 
-
 export async function getCountries(): Promise<ICountry[]> {
   try {
     const res = await fetch(
@@ -38,7 +37,6 @@ export async function getCountries(): Promise<ICountry[]> {
     ];
   }
 }
-
 
 const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL!;
 
@@ -76,7 +74,7 @@ export async function registerAction(data: RegisterData) {
   }
 }
 
-export async function loginAction(data:LoginData) {
+export async function loginAction(data: LoginData) {
   try {
     const formData = new FormData();
     formData.append("email", data.email);
@@ -106,7 +104,7 @@ export async function logoutAction(userToken: string) {
   try {
     if (!userToken) {
       return { success: false, message: "لم يتم العثور على رمز المصادقة" };
-    } 
+    }
     const res = await fetch(`${BASE_URL}/auth/logout`, {
       method: "POST",
       headers: {
@@ -132,15 +130,12 @@ export async function sendVerificationCode(userToken: string) {
     if (!userToken) {
       return { success: false, message: "لم يتم العثور على رمز المصادقة" };
     }
-    const res = await fetch(
-      `${BASE_URL}/auth/verify-email/resend-code`,
-      {
-        method: "POST",
-        headers: {
-          Authorization: `Bearer ${userToken}`,
-        },
+    const res = await fetch(`${BASE_URL}/auth/verify-email/resend-code`, {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${userToken}`,
       },
-    );
+    });
     const result = await res.json();
     return {
       success: res.ok,
@@ -157,7 +152,6 @@ export async function sendVerificationCode(userToken: string) {
 
 export async function verifyEmailWithToken(userToken: string, code: string) {
   try {
-
     if (!userToken) {
       return { success: false, message: "لم يتم العثور على رمز المصادقة" };
     }
@@ -187,8 +181,7 @@ export async function verifyEmailWithToken(userToken: string, code: string) {
   }
 }
 
-
-// GER THE USER DATA 
+// GET THE USER DATA
 export async function getUserData(userToken: string) {
   try {
     if (!userToken) {
@@ -199,14 +192,13 @@ export async function getUserData(userToken: string) {
       headers: {
         Authorization: `Bearer ${userToken}`,
       },
-    }); 
+    });
     const result = await res.json();
     return {
       success: res.ok,
       ...result,
     };
-  }
-    catch (error) {   
+  } catch (error) {
     console.error("خطأ في جلب بيانات المستخدم:", error);
     return {
       success: false,
@@ -214,4 +206,3 @@ export async function getUserData(userToken: string) {
     };
   }
 }
-

@@ -1,18 +1,24 @@
-"use client"
+"use client";
+
 import { useAuth } from "@/context/UserContext";
-import { redirect } from "next/navigation";
+import { useRouter } from "next/navigation";
+import { useEffect } from "react";
 
 export default function DashboardContent() {
-const { user } = useAuth()  
-  console.log("user in Home", user);
-  if (!user?.token ) return redirect("/login");
+  const { user } = useAuth();
+  const router = useRouter();
+
+  useEffect(() => {
+    if (!user?.token) {
+      router.push("/login");
+    }
+  }, [user?.token, router]);
+
+
 
   return (
-          <div className="">
-        <h1>Welcome back, {user?.name}!</h1>
-      </div>
+    <div>
+      <h1>Welcome back, {user?.name}!</h1>
+    </div>
   );
 }
-
-
-

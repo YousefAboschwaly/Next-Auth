@@ -36,6 +36,7 @@ export default function Verify() {
     } else {
       toast.error(res.message || "Verification failed");
     }
+    setLoading(false);
   };
 
   const handleResend = async () => {
@@ -110,14 +111,13 @@ export default function Verify() {
                   onClick={handleResend}
                   type="button"
                   variant="ghost"
-                  disabled={loading}
+                  disabled={loading || verifyLoading}
                   className="text-[#be968e] hover:text-[#a8827a] hover:bg-[#be968e]/10 rounded-xl h-10 px-4 cursor-pointer"
                   data-testid="link-resend"
                 >
                   <RotateCcw className="w-4 h-4 mr-2" />
                   {verifyLoading ? "Sending..." : "Resend Code"}
                 </Button>
-
                 <Button
                   type="button"
                   variant="ghost"

@@ -39,7 +39,6 @@ import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 
 export default function RegisterForm({ countries }: { countries: ICountry[] }) {
-  
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -74,19 +73,16 @@ export default function RegisterForm({ countries }: { countries: ICountry[] }) {
         toast.error(res.message || "Registration failed");
         return;
       }
-      if (res.success) {
-        localStorage.setItem("userToken", res.data.token);
-        
-    
-        toast.success(res.message || "Registered successfully");
-        router.push("/verify");
-      }
-    } catch  {
+
+      
+      localStorage.setItem("userToken", res.data.token);
+      toast.success(res.message || "Registered successfully");
+      router.push("/verify");
+    } catch {
       toast.error("An unexpected error occurred. Please try again.");
-    }finally{
+    } finally {
       setLoading(false);
     }
-
   };
   return (
     <div className="min-h-screen flex items-center justify-center bg-linear-to-br from-[#f8f4f3] to-[#fefefe] p-4">
