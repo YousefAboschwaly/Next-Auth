@@ -47,6 +47,8 @@
   /* My Colors  */
   --color-main : #020202 ;
   --color-secondary: #8A8A8A ;
+  --color-light: #ECECEC66 ;
+  --color-purp:#BE968E
 }
 
 :root {

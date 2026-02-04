@@ -3,7 +3,7 @@ import React from "react";
 
 export default function Banner() {
   return (
-    <section className="relative w-full h-37.5 md:h-60 bg-[#F3F3F3]/50 flex items-center justify-center overflow-hidden text-center">
+    <section className="relative w-full h-37.5 md:h-60 bg-light flex items-center justify-center overflow-hidden text-center">
       <div className="relative w-full h-full">
         <Image
           className="absolute inset-0 w-full h-full object-cover"
