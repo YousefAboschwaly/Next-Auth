@@ -9,13 +9,18 @@ import {
   InputOTPGroup,
   InputOTPSlot,
 } from "@/components/ui/input-otp";
-import { sendVerificationCode, verifyEmailWithToken } from "@/actions/auth.actions";
+import {
+  sendVerificationCode,
+  verifyEmailWithToken,
+} from "@/actions/auth.actions";
 import { toast } from "sonner";
+import { ChevronLeft, RotateCcw } from "lucide-react";
 
 export default function Verify() {
   const router = useRouter();
   const [code, setCode] = useState("");
   const [loading, setLoading] = useState(false);
+  const [verifyLoading, setVerifyLoading] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -23,9 +28,9 @@ export default function Verify() {
     const userToken = localStorage.getItem("userToken") || "";
 
     const res = await verifyEmailWithToken(userToken, code);
-    console.log(res)
+    console.log(res);
     if (res.success) {
-        toast.success(res.message || "Registered successfully");
+      toast.success(res.message || "Registered successfully");
 
       router.push("/login");
     } else {
@@ -35,16 +40,15 @@ export default function Verify() {
 
   const handleResend = async () => {
     const userToken = localStorage.getItem("userToken") || "";
-    setLoading(true);
+    setVerifyLoading(true);
     const res = await sendVerificationCode(userToken);
     if (res.success) {
       toast.success(res.message || "Verification code resent");
-    } 
-    else {
+    } else {
       toast.error(res.message || "Failed to resend code");
     }
-    setLoading(false);
-  }
+    setVerifyLoading(false);
+  };
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-linear-to-br from-[#f8f4f3] to-[#fefefe] p-4">
@@ -88,38 +92,43 @@ export default function Verify() {
               data-testid="test-code-hint"
             >
               For testing, use code:{" "}
-              <span className="font-mono font-bold">123456</span>
+              <span className="font-mono font-bold text-gray-600">123456</span>
             </p>
 
-            <Button
-              type="submit"
-              disabled={loading || code.length !== 6}
-              className="w-full h-12 bg-[#be968e] hover:bg-[#a8827a] text-white rounded-xl font-medium"
-              data-testid="btn-verify"
-            >
-              {loading ? "Verifying..." : "Verify Account"}
-            </Button>
-            <div className=" flex justify-center items-center  gap-8">
-              <p className="text-center text-sm text-gray-500">
-                <button
-                onClick={handleResend}
+            <div className="space-y-4">
+              <Button
+                type="submit"
+                disabled={loading || code.length !== 6}
+                className="w-full h-12 bg-[#be968e] hover:bg-[#a8827a] text-white rounded-xl font-medium shadow-sm transition-all active:scale-[0.98]"
+                data-testid="btn-verify"
+              >
+                {loading ? "Verifying..." : "Verify Account"}
+              </Button>
+
+              <div className="flex items-center justify-between pt-2">
+                <Button
+                  onClick={handleResend}
                   type="button"
-                  className="text-[#be968e] font-medium hover:underline"
+                  variant="ghost"
+                  disabled={loading}
+                  className="text-[#be968e] hover:text-[#a8827a] hover:bg-[#be968e]/10 rounded-xl h-10 px-4 cursor-pointer"
                   data-testid="link-resend"
                 >
-                  {loading ? "Resending..." : "Resend Code"}
-                </button>
-              </p>
-              <p className="text-center text-sm text-gray-500">
-                <button
+                  <RotateCcw className="w-4 h-4 mr-2" />
+                  {verifyLoading ? "Sending..." : "Resend Code"}
+                </Button>
+
+                <Button
                   type="button"
+                  variant="ghost"
                   onClick={() => router.push("/login")}
-                  className="text-[#be968e] font-medium hover:underline"
+                  className="text-gray-500 hover:text-gray-700 hover:bg-gray-100 rounded-xl h-10 px-4 cursor-pointer"
                   data-testid="link-signin"
                 >
+                  <ChevronLeft className="w-4 h-4 mr-1" />
                   Back to Sign In
-                </button>
-              </p>
+                </Button>
+              </div>
             </div>
           </form>
         </CardContent>

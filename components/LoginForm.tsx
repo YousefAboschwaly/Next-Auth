@@ -43,9 +43,9 @@ export default function LoginForm() {
         return;
       }
       if (res.success) {
-        localStorage.setItem("userToken", res.data.token);
         const data = await getUserData(res.data.token);
-        console.log("User data after login:", data);
+        localStorage.setItem("userToken", res.data.token);
+        localStorage.setItem("userData", JSON.stringify(data.data));
         setUser(data.data);
 
         toast.success(res.message || "Logged in successfully");
