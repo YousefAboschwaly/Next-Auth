@@ -1,4 +1,5 @@
 "use client";
+import { getUserData, loginAction } from "@/actions/auth.actions";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {
@@ -10,16 +11,19 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import { useAuth } from "@/context/UserContext";
 import { type LoginData, LoginSchema } from "@/schema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Eye, EyeOff } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
+import { toast } from "sonner";
 
 export default function LoginForm() {
   const [loading, setLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
+  const { setUser } = useAuth();
   const router = useRouter();
   const form = useForm<LoginData>({
     resolver: zodResolver(LoginSchema),
@@ -31,7 +35,28 @@ export default function LoginForm() {
 
   const onSubmit = async (data: LoginData) => {
     setLoading(true);
-    console.log("Login data submitted:", data);
+    try {
+      const res = await loginAction(data);
+
+      if (!res.success) {
+        toast.error(res.message || "Login failed");
+        return;
+      }
+      if (res.success) {
+        const userResponse = await getUserData(res.data.token);
+        localStorage.setItem("userToken", res.data.token);
+        localStorage.setItem("userData", JSON.stringify(userResponse.data));
+        setUser(userResponse.data);
+
+
+        toast.success(res.message || "Logged in successfully");
+        router.push("/");
+      }
+    } catch {
+      toast.error("An unexpected error occurred. Please try again.");
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -46,7 +71,6 @@ export default function LoginForm() {
         <CardContent>
           <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
-              
               <FormField
                 control={form.control}
                 name="email"
