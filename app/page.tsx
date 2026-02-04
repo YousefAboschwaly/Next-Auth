@@ -1,5 +1,9 @@
-import HomeContent from "@/components/HomeContent";
+import { Navbar } from "@/components/Landing/Navbar";
 
 export default function Home() {
-  return <HomeContent />;
+  return (
+    <main className="min-h-screen bg-white font-poppins text-[#020202] overflow-x-hidden">
+      <Navbar />
+    </main>
+  );
 }
