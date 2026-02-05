@@ -1,5 +1,6 @@
 import Banner from "@/components/Landing/Banner";
 import { Navbar } from "@/components/Landing/Navbar";
+import { ProductCarousal } from "@/components/Landing/ProductCarousal";
 import ProductDetails from "@/components/Landing/ProductDetails";
 
 export default function Home() {
@@ -8,6 +9,7 @@ export default function Home() {
       <Navbar />
       <Banner/>
       <ProductDetails/>
+      <ProductCarousal/>
     </main>
   );
 }
