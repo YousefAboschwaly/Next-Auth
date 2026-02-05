@@ -1,4 +1,5 @@
 import Banner from "@/components/Landing/Banner";
+import Footer from "@/components/Landing/Footer";
 import { Navbar } from "@/components/Landing/Navbar";
 import { ProductCarousal } from "@/components/Landing/ProductCarousal";
 import ProductDetails from "@/components/Landing/ProductDetails";
@@ -10,6 +11,7 @@ export default function Home() {
       <Banner/>
       <ProductDetails/>
       <ProductCarousal/>
+      <Footer/>
     </main>
   );
 }

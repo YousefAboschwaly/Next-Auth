@@ -1,5 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import Image from "next/image";
 
 const helpLinks = ["My Account", "FAQs", "Categories", "All Products"];
 
@@ -12,125 +13,107 @@ const policyLinks = [
 ];
 
 const socialIcons = [
-  { src: "/figmaAssets/eva-facebook-fill.svg", alt: "Facebook" },
-  { src: "/figmaAssets/mdi-twitter.svg", alt: "Twitter" },
-  { src: "/figmaAssets/ri-instagram-fill.svg", alt: "Instagram" },
-  { src: "/figmaAssets/akar-icons-linkedin-v2-fill.svg", alt: "LinkedIn" },
-  { src: "/figmaAssets/combo-shape.svg", alt: "Social" },
-  { src: "/figmaAssets/icon-park-telegram.svg", alt: "Telegram" },
+  { src: "/icons/facebook.svg", alt: "Facebook" },
+  { src: "/icons/twitter.svg", alt: "Twitter" },
+  { src: "/icons/instagram.svg", alt: "Instagram" },
+  { src: "/icons/linkedin.svg", alt: "LinkedIn" },
+  { src: "/icons/whatsapp.svg", alt: "Social" },
+  { src: "/icons/telegram.svg", alt: "Telegram" },
 ];
 
-export const SimilarProductsSection = () => {
+export default function Footer() {
   return (
-    <footer className="relative w-full bg-[#020202]">
-      <img
-        className="absolute inset-0 w-full h-full object-cover"
+    <footer className="relative     w-full bg-[#020202B2]">
+      <Image
+        className="absolute inset-0] lg:w-full h-full object-cover"
+        width={1440}
+        height={323}
         alt="Kids photography"
-        src="/figmaAssets/kids-photography-1.png"
+        src="/kid.png"
       />
 
-      <div className="absolute inset-0 bg-[#020202b2]" />
+      <div className="absolute inset-0 bg-[#020202B2]" />
 
-      <div className="relative container mx-auto px-6 md:px-[120px] py-10 md:py-14">
-        <div className="grid grid-cols-1 lg:grid-cols-[324px_1fr] gap-10 md:gap-8">
-          <div className="flex flex-col gap-6">
-            <img
-              className="w-[66px] h-[51px]"
-              alt="Tt logott logo"
-              src="/figmaAssets/tt-logott-logo-1.svg"
+      <div className="relative  px-5 lg:px-30 py-10 md:py-14">
+        <div className="flex flex-col lg:flex-row  gap-12 lg:gap-13.5  ">
+          <div className="flex flex-col gap-6 lg:max-w-81">
+            <Image
+              className="w-16.5 h-12.75"
+              width={66}
+              height={51}
+              alt="logo"
+              src="/icons/logo-3.svg"
             />
 
-            <p className="[font-family:'Poppins',Helvetica] font-medium text-[#ffffffb2] text-sm tracking-[0] leading-[normal]">
-              Ipsam in eos qui consequatur ab cum maxime.Soluta dolor quae Ipsam
-              in eos qui consequatur ab .Soluta dolor quae Ipsam in eos
-              quconsequatur ab cum maxime.Soluta dolor quae
+            <p className=" font-medium text-[#ffffffb2] lg:text-sm tracking-[0] leading-[normal]">
+              Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam
+              nonummy Lorem ipsum dolor sit amet, consectetuer adipiscing elit,
+              sed diam nonummy dolor sit amet, consectetuer adipiscing elit, sed
+              diam nonummy
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10 md:gap-8 lg:gap-12">
-            <nav className="flex flex-col gap-4 md:gap-6">
-              <h3 className="font-h5-semi-blod font-[number:var(--h5-semi-blod-font-weight)] text-white text-xl md:text-[length:var(--h5-semi-blod-font-size)] tracking-[var(--h5-semi-blod-letter-spacing)] leading-[var(--h5-semi-blod-line-height)] [font-style:var(--h5-semi-blod-font-style)]">
+          <div className="flex  justify-between lg:justify-start lg:gap-20  ">
+            <nav className="flex flex-col gap-4 md:gap-6 ">
+              <h3 className=" font-semibold text-2xl text-white  ">
                 Let Us Help
               </h3>
 
-              <ul className="flex flex-col gap-[9px]">
+              <ul className="flex flex-col gap-2.25 w-full">
                 {helpLinks.map((link, index) => (
-                  <li key={index}>
-                    <a
-                      href="#"
-                      className="[font-family:'Poppins',Helvetica] font-medium text-[#ffffffb2] text-base tracking-[0] leading-[normal] hover:text-white transition-colors"
-                    >
-                      {link}
-                    </a>
+                  <li key={index} className="text-white font-medium  ">
+                    {link}
                   </li>
                 ))}
               </ul>
             </nav>
 
             <nav className="flex flex-col gap-4 md:gap-6">
-              <h3 className="font-h5-semi-blod font-[number:var(--h5-semi-blod-font-weight)] text-white text-xl md:text-[length:var(--h5-semi-blod-font-size)] tracking-[var(--h5-semi-blod-letter-spacing)] leading-[var(--h5-semi-blod-line-height)] [font-style:var(--h5-semi-blod-font-style)]">
-                Policies
-              </h3>
+              <h3 className="font-semibold text-2xl text-white">Policies</h3>
 
-              <ul className="flex flex-col gap-[9px]">
+              <ul className="flex flex-col gap-2.25 w-full">
                 {policyLinks.map((link, index) => (
-                  <li key={index}>
-                    <a
-                      href="#"
-                      className="[font-family:'Poppins',Helvetica] font-medium text-[#ffffffb2] text-base tracking-[0] leading-[normal] hover:text-white transition-colors"
-                    >
-                      {link}
-                    </a>
+                  <li key={index} className="text-white font-medium  ">
+                    {link}
                   </li>
                 ))}
               </ul>
             </nav>
+          </div>
 
-            <div className="flex flex-col gap-6 md:col-span-2 lg:col-span-1">
-              <div className="flex flex-col gap-4 md:gap-6">
-                <h3 className="font-h5-semi-blod font-[number:var(--h5-semi-blod-font-weight)] text-white text-xl md:text-[length:var(--h5-semi-blod-font-size)] tracking-[var(--h5-semi-blod-letter-spacing)] leading-[var(--h5-semi-blod-line-height)] [font-style:var(--h5-semi-blod-font-style)]">
-                  Send Email
-                </h3>
+          <div className="flex flex-col gap-6 md:col-span-2 lg:col-span-1">
+            <div className="flex flex-col gap-4 md:gap-6">
+              <h3 className="font-semibold text-2xl text-white ">Send Email</h3>
 
-                <div className="relative h-[62px] bg-whitewhite-500 rounded-xl overflow-hidden border-[0.5px] border-solid border-[#0000001a]">
-                  <Input
-                    type="email"
-                    placeholder="Email address"
-                    className="h-full pl-6 pr-[100px] md:pr-[150px] border-0 [font-family:'Poppins',Helvetica] font-normal text-textblackblack-200 text-sm tracking-[0] leading-[19.6px] placeholder:text-textblackblack-200"
-                  />
+              <div className="relative h-15.5 bg-white rounded-xl overflow-hidden border-[0.5px] border-solid border-[#0000001a]">
+                <Input
+                  type="email"
+                  placeholder="Email address"
+                  className="h-full pl-6 pr-25 md:pr-37.5 border-0 font-normal text-sm tracking-[0] leading-[19.6px]"
+                />
 
-                  <Button className="absolute top-1/2 -translate-y-1/2 right-2 w-[80px] md:w-[135px] h-[46px] bg-pinkpink-500 hover:bg-pinkpink-500/90 rounded-xl border-[0.5px] border-solid border-[#0000001a] font-title2-semi-blod font-[number:var(--title2-semi-blod-font-weight)] text-whitewhitewhite-500 text-[length:var(--title2-semi-blod-font-size)] tracking-[var(--title2-semi-blod-letter-spacing)] leading-[var(--title2-semi-blod-line-height)] [font-style:var(--title2-semi-blod-font-style)]">
-                    Send
-                  </Button>
-                </div>
+                <Button className="absolute top-1/2 -translate-y-1/2 right-2 w-20 md:w-33.75 h-11.5 bg-purp hover:bg-purp/90 rounded-xl border-[0.5px] border-solid border-[#0000001a] ">
+                  Send
+                </Button>
               </div>
+            </div>
 
-              <div className="flex flex-col gap-3">
-                <h4 className="[font-family:'Poppins',Helvetica] font-semibold text-white text-base tracking-[0] leading-[22.4px]">
-                  Follow Us
-                </h4>
+            <div className="flex flex-col gap-4">
+              <h4 className=" font-semibold text-white text-base tracking-[0] leading-[22.4px]">
+                Follow Us
+              </h4>
 
-                <div className="flex items-start gap-4 flex-wrap">
-                  {socialIcons.map((icon, index) => (
-                    <a
-                      key={index}
-                      href="#"
-                      className="w-6 h-6 hover:opacity-80 transition-opacity"
-                    >
-                      {icon.src === "/figmaAssets/combo-shape.svg" ? (
-                        <div className="w-6 h-6 flex items-center justify-center">
-                          <div className="w-5 h-5 bg-[url(/figmaAssets/combo-shape.svg)] bg-[100%_100%]" />
-                        </div>
-                      ) : (
-                        <img
-                          className="w-6 h-6"
-                          alt={icon.alt}
-                          src={icon.src}
-                        />
-                      )}
-                    </a>
-                  ))}
-                </div>
+              <div className="flex items-start gap-6 flex-wrap">
+                {socialIcons.map((icon, index) => (
+                  <Image
+                    key={index}
+                    className="w-6 h-6"
+                    alt={icon.alt}
+                    src={icon.src}
+                    width={24}
+                    height={24}
+                  />
+                ))}
               </div>
             </div>
           </div>
@@ -138,4 +121,4 @@ export const SimilarProductsSection = () => {
       </div>
     </footer>
   );
-};
+}
