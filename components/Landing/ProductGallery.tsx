@@ -83,15 +83,7 @@ export function ProductGallery() {
         </button>
       </div>
       
-      <div className="  absolute -bottom-12.5 ">
-        <Image
-          width={98}
-          height={57}
-          src="/logo-2.svg"
-          alt="Logo"
-          className="hidden lg:block  w-24.5 h-14.25  object-cover "
-        />
-      </div>
+    
     </div>
   );
 }

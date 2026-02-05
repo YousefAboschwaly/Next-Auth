@@ -129,7 +129,8 @@ flex items-center justify-center hover:scale-105 transition-transform cursor-poi
                 aria-label={`Select ${color.name}`}
               >
                 <div
-                  className={`w-6 h-6 md:w-8 md:h-8 rounded-full ${color.class} transition-all `}
+                  className={`w-6 h-6 md:w-8 md:h-8 rounded-full  transition-all `}
+                    style={{ backgroundColor: color.class }}
                 />
 
                 {selectedColor === color.name && (
