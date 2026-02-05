@@ -1,12 +1,11 @@
 "use client";
 import { Nav_Links, Nav_Right_Links } from "@/constants";
-import {
-  ChevronDown,
-  X
-} from "lucide-react";
+import { ChevronDown, X } from "lucide-react";
 import Image from "next/image";
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 export function Navbar() {
+  const router = useRouter();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   return (
     <header className="w-full ">
@@ -37,13 +36,13 @@ export function Navbar() {
                       height={20}
                       className="w-5 h-5"
                     />
-                    <p >{link.name}</p>
+                    <p>{link.name}</p>
                   </li>
                 ))}
               </ul>
             </nav>
           </div>
-          
+
           {/* Desktop Right Actions */}
           <div className="hidden md:flex items-center gap-4 ">
             {Nav_Right_Links.map((link, index) => (
@@ -65,7 +64,10 @@ export function Navbar() {
               EN <ChevronDown className="w-6 h-6" />
             </button>
 
-            <button className="flex items-center gap-1 text-main">
+            <button
+              className="flex items-center gap-1 text-main cursor-pointer"
+              onClick={() => router.push("/login")}
+            >
               <Image
                 src="/icons/user.svg"
                 alt="User"
@@ -143,7 +145,8 @@ export function Navbar() {
                 EN <ChevronDown className="w-6 h-6" />
               </button>
 
-              <button className="flex items-center gap-1 text-main">
+              <button className="flex items-center gap-1 text-main cursor-pointer"
+              onClick={() => router.push("/login")}>
                 <Image
                   src="/icons/user.svg"
                   alt="User"
