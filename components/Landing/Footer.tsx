@@ -23,7 +23,7 @@ const socialIcons = [
 
 export default function Footer() {
   return (
-    <footer className="relative     w-full bg-[#020202B2]">
+    <footer className="relative  mt-24   w-full bg-[#020202B2]">
       <Image
         className="absolute inset-0] lg:w-full h-full object-cover"
         width={1440}
