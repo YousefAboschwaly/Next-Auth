@@ -1,13 +1,6 @@
 "use client";
 import { Colors } from "@/constants";
-import {
-  ChevronDown,
-  Code,
-  Heart,
-  Minus,
-  Plus,
-  ShoppingBag,
-} from "lucide-react";
+import { ChevronDown, Minus, Plus } from "lucide-react";
 import Image from "next/image";
 import { useState } from "react";
 
@@ -20,7 +13,7 @@ export function ProductInfo() {
   const originalPrice = 360.0;
   return (
     <>
-      <div className="flex flex-col h-full">
+      <div className="flex flex-col h-full w-full lg:max-w-162">
         {/* Header Actions */}
         <div className="flex justify-between items-start mb-3 md:mb-4">
           <span className=" font-semibold text-xs inline-block px-4 py-2 rounded-[32px] border-[0.5px] border-purp text-purp">
@@ -56,14 +49,12 @@ flex items-center justify-center hover:scale-105 transition-transform cursor-poi
         </div>
 
         {/* Title & Price */}
-        <h1 className="text-[16px] md:text-2xl font-medium  mb-3 md:mb-4 ">
+        <h1 className="text-[16px] md:text-2xl font-medium  mb-3 md:mb-4 max-w-131 leading-[150%]">
           J.VER Man Shirts Solid Long Sleeve Stretch Wrinkle-Free With Blue
         </h1>
 
         <div className="flex items-baseline gap-2 md:gap-3 mb-1 md:mb-2">
-          <span className="text-xl font-medium ">
-            ${price.toFixed(2)}
-          </span>
+          <span className="text-xl font-medium ">${price.toFixed(2)}</span>
           <span className="text-[16px] text-secondary leading-[140%] line-through decoration-1">
             ${originalPrice.toFixed(2)}
           </span>
@@ -73,12 +64,14 @@ flex items-center justify-center hover:scale-105 transition-transform cursor-poi
         </p>
 
         {/* Description */}
-        <div className="space-y-1 text-xs md:text-sm pb-8 md:pb-5 border-b border-[#E6E6E6] w-full  md:max-w-127.5">
+        <div className="space-y-1 text-xs md:text-sm pb-8 md:pb-5  w-full  md:max-w-127.5">
           <p>
             Lorem ipsum dolor sit, consectetuer adipiscing elit, sed diam
             nonummy Lorem ipsum dolor sit amet, diam nonummy
           </p>
         </div>
+
+        <div className="border-b border-[#E6E6E6] h-px" />
 
         {/* Selectors */}
         <div className="space-y-6 mb-6 md:mb-8 mt-8 w-full lg:max-w-75">
@@ -123,111 +116,83 @@ flex items-center justify-center hover:scale-105 transition-transform cursor-poi
         </div>
 
         {/* Colors */}
-        <div className="mb-6 md:mb-8">
-          <label className="block text-sm md:text-base font-bold text-gray-900 mb-2 md:mb-3">
+        <div className="mb-16">
+          <label className="block text-base md:text-[20px] font-medium mb-5">
             Colors
           </label>
-          <div className="flex items-center gap-2 md:gap-3">
+          <div className="flex items-center gap-2 md:gap-4">
             {Colors.map((color) => (
               <button
                 key={color.name}
                 onClick={() => setSelectedColor(color.name)}
-                className={`w-6 h-6 md:w-8 md:h-8 rounded-full ${color.class} ring-2 ring-offset-2 transition-all ${selectedColor === color.name ? "ring-blue-500 scale-110" : "ring-transparent hover:scale-105"}`}
+                className={`relative w-11 h-11 md:w-15 md:h-15 rounded-full flex items-center justify-center bg-[#F4F7F9] cursor-pointer  ring-[1.5px] ${selectedColor === color.name ? "ring-main scale-110" : "ring-transparent hover:scale-105"}`}
                 aria-label={`Select ${color.name}`}
-              />
+              >
+                <div
+                  className={`w-6 h-6 md:w-8 md:h-8 rounded-full ${color.class} transition-all `}
+                />
+
+                {selectedColor === color.name && (
+                  <p className=" absolute top-16 text-xs md:text-sm text-[#545454] font-medium">
+                    {selectedColor}
+                  </p>
+                )}
+              </button>
             ))}
           </div>
-          <p className="mt-1.5 md:mt-2 text-xs md:text-sm text-gray-500">
-            {selectedColor}
-          </p>
         </div>
 
         {/* Quantity - Desktop Only */}
-        <div className="hidden md:block mt-auto">
-          <div className="flex items-center justify-between mb-2">
-            <label className="text-base font-bold text-gray-900">
+        <div className="space-y-4 mt-auto w-full">
+          <div className="flex items-center gap-2">
+            <label className="text-base lg:text-[20px] font-medium ">
               Quantity
             </label>
-            <span className="text-sm text-gray-400">
+            <span className="text-xs lg:text-base text-secondary leading-[140%] ">
               (${(price * quantity).toFixed(2)} for Piece)
             </span>
           </div>
 
-          <div className="flex items-center gap-4 md:gap-6">
-            <div className="flex items-center bg-gray-50 rounded-lg p-1">
-              <button
-                onClick={() => setQuantity(Math.max(1, quantity - 1))}
-                className="w-10 h-10 flex items-center justify-center bg-white rounded-md shadow-sm text-gray-600 hover:text-gray-900 disabled:opacity-50"
-                disabled={quantity <= 1}
-              >
-                <Minus className="w-4 h-4" />
-              </button>
-              <span className="w-12 text-center font-bold text-gray-900">
-                {quantity.toString().padStart(2, "0")}
+          <div className="flex items-center flex-col lg:flex-row gap-5 lg:justify-between lg:gap-0">
+            <div className="flex items-center justify-start w-full lg:w-auto gap-5">
+              <div className="flex items-center bg-[#F5F5F5] rounded-2xl p-2 gap-8">
+                <button
+                  className="w-10 h-10 flex items-center justify-center bg-white rounded-xl  disabled:opacity-50 text-[28px] font-medium hover:text-gray-900 cursor-pointer"
+                  onClick={() => setQuantity(Math.max(1, quantity - 1))}
+                  disabled={quantity <= 1}
+                >
+                  <Minus className="w-5 h-5 " />
+                </button>
+
+                <span className="text-2xl font-medium text-center text-[#333333]">
+                  {quantity.toString().padStart(2, "0")}
+                </span>
+
+                <button
+                  onClick={() => setQuantity(quantity + 1)}
+                  className="w-10 h-10 flex items-center justify-center bg-white rounded-xl  disabled:opacity-50 text-[28px] font-medium hover:text-gray-900 cursor-pointer"
+                >
+                  <Plus className="w-5 h-5" />
+                </button>
+              </div>
+
+              <span className="text-2xl font-medium">
+                ${(price * quantity).toFixed(2)}
               </span>
-              <button
-                onClick={() => setQuantity(quantity + 1)}
-                className="w-10 h-10 flex items-center justify-center bg-white rounded-md shadow-sm text-gray-600 hover:text-gray-900"
-              >
-                <Plus className="w-4 h-4" />
-              </button>
             </div>
 
-            <div className="text-xl font-bold text-gray-900">
-              ${(price * quantity).toFixed(2)}
-            </div>
-
-            <button className="flex-1 bg-[#C19A8B] hover:bg-[#b0897a] text-white font-bold py-4 px-6 rounded-xl flex items-center justify-center gap-2 transition-colors shadow-lg shadow-[#C19A8B]/20">
+            <button className=" bg-purp hover:bg-[#b0897a] w-full lg:w-auto text-white font-medium py-4 lg:px-13.25 rounded-2xl flex items-center justify-center gap-2 transition-colors shadow-lg shadow-purp/20 cursor-pointer">
               Add To Cart
-              <ShoppingBag className="w-5 h-5 opacity-80" />
+              <Image
+                src="/icons/purp-shopping-bag.svg"
+                alt="Add to Bag"
+                width={24}
+                height={24}
+                className="w-6 h-6 "
+              />
             </button>
           </div>
         </div>
-
-        {/* Quantity Label - Mobile */}
-        <div className="md:hidden">
-          <div className="flex items-center justify-between">
-            <label className="text-sm font-bold text-gray-900">Quantity</label>
-            <span className="text-xs text-gray-400">
-              (${(price * quantity).toFixed(2)} for Piece)
-            </span>
-          </div>
-        </div>
-      </div>
-
-      {/* Fixed Bottom Bar - Mobile Only */}
-      <div className="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 px-4 py-3 flex items-center gap-3 md:hidden z-40">
-        <button className="w-10 h-10 rounded-xl bg-gray-100 flex items-center justify-center text-gray-600">
-          <Code className="w-5 h-5" />
-        </button>
-
-        <div className="flex items-center bg-gray-100 rounded-lg">
-          <button
-            onClick={() => setQuantity(Math.max(1, quantity - 1))}
-            className="w-9 h-9 flex items-center justify-center text-gray-600"
-            disabled={quantity <= 1}
-          >
-            <Minus className="w-4 h-4" />
-          </button>
-          <span className="w-6 text-center font-bold text-gray-900 text-sm">
-            {quantity.toString().padStart(2, "0")}
-          </span>
-          <button
-            onClick={() => setQuantity(quantity + 1)}
-            className="w-9 h-9 flex items-center justify-center text-gray-600"
-          >
-            <Plus className="w-4 h-4" />
-          </button>
-        </div>
-
-        <div className="text-lg font-bold text-gray-900">
-          ${(price * quantity).toFixed(2)}
-        </div>
-
-        <button className="flex-1 bg-[#C19A8B] text-white font-bold py-3 px-4 rounded-xl flex items-center justify-center gap-2 text-sm">
-          Add To Cart
-          <ShoppingBag className="w-4 h-4 opacity-80" />
-        </button>
       </div>
     </>
   );

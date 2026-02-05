@@ -7,7 +7,7 @@ import { useState } from "react";
 export function ProductGallery() {
   const [activeImage, setActiveImage] = useState(0);
   return (
-    <div className="flex flex-col gap-4 mx-auto md:mx-0 w-88.25 lg:w-131">
+    <div className=" relative flex flex-col gap-4 mx-auto md:mx-0 w-88.25 lg:w-131">
       {/* Main Image */}
       <div className="relative h-95.25   lg:h-141.25 bg-[#F5F5F5] rounded-3xl lg:rounded-[24px] overflow-hidden group">
         <Image
@@ -20,7 +20,7 @@ export function ProductGallery() {
 
         {/* Navigation Arrows */}
         <button
-          className="absolute left-4 top-1/2 -translate-y-1/2 w-8 h-8 lg:w-12 lg:h-12 bg-[#BE968E] backdrop-blur-sm rounded-full flex items-center justify-center text-white hover:bg-[#A87C6E] transition-colors shadow-sm cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
+          className="absolute left-4 top-1/2 -translate-y-1/2 w-8 h-8 lg:w-12 lg:h-12 bg-purp backdrop-blur-sm rounded-full flex items-center justify-center text-white hover:bg-[#A87C6E] transition-colors shadow-sm cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
           onClick={() => setActiveImage((prev) => prev - 1)}
           disabled={activeImage === 0}
         >
@@ -28,7 +28,7 @@ export function ProductGallery() {
         </button>
 
         <button
-          className="absolute right-4 top-1/2 -translate-y-1/2 w-8 h-8 lg:w-12 lg:h-12 bg-[#BE968E] backdrop-blur-sm rounded-full flex items-center justify-center text-white hover:bg-[#A87C6E] transition-colors shadow-sm cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
+          className="absolute right-4 top-1/2 -translate-y-1/2 w-8 h-8 lg:w-12 lg:h-12 bg-purp backdrop-blur-sm rounded-full flex items-center justify-center text-white hover:bg-[#A87C6E] transition-colors shadow-sm cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
           onClick={() =>
             setActiveImage((prev) => (prev + 1 < Images.length ? prev + 1 : 0))
           }
@@ -51,7 +51,7 @@ export function ProductGallery() {
       </div>
 
       {/* Thumbnails */}
-      <div className="flex gap-4">
+      <div className="flex gap-4 z-10">
         {Images.slice(1, 3).map((img, idx) => (
           <button
             key={idx}
@@ -81,6 +81,16 @@ export function ProductGallery() {
             +2
           </div>
         </button>
+      </div>
+      
+      <div className="  absolute -bottom-12.5 ">
+        <Image
+          width={98}
+          height={57}
+          src="/logo-2.svg"
+          alt="Logo"
+          className="hidden lg:block  w-24.5 h-14.25  object-cover "
+        />
       </div>
     </div>
   );
