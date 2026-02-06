@@ -4,6 +4,8 @@ import { ChevronDown, X } from "lucide-react";
 import Image from "next/image";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import Logo from "@/public/logo.png";
+
 export function Navbar() {
   const router = useRouter();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -14,7 +16,7 @@ export function Navbar() {
           <div className="flex items-center gap-10.5 ">
             {/* Logo */}
             <Image
-              src="/logo.png"
+              src={Logo}
               alt="TinyTales"
               width={65}
               height={51}
