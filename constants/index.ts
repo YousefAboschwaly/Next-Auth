@@ -164,3 +164,22 @@ export const Products = [
     isFavorite: false,
   },
 ];
+
+export const helpLinks = ["My Account", "FAQs", "Categories", "All Products"];
+
+export const policyLinks = [
+  "Refund Policy",
+  "About Us",
+  "Cancellation Policy",
+  "Terms and Conditions",
+  "Privacy Policy",
+];
+
+export const socialIcons = [
+  { src: "/icons/facebook.svg", alt: "Facebook" },
+  { src: "/icons/twitter.svg", alt: "Twitter" },
+  { src: "/icons/instagram.svg", alt: "Instagram" },
+  { src: "/icons/linkedin.svg", alt: "LinkedIn" },
+  { src: "/icons/whatsapp.svg", alt: "Social" },
+  { src: "/icons/telegram.svg", alt: "Telegram" },
+];

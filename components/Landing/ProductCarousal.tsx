@@ -41,7 +41,7 @@ export function ProductCarousal() {
   const scrollContainerRef = useRef<HTMLDivElement>(null);
 
   return (
-    <div className="mt-16 pt-10 pl-5 lg:pl-30 ">
+    <div className="mt-16 pt-10 pl-5 lg:pl-30 pb-20 ">
       <div className=" relative   ">
         <h2 className="z-10 text-base lg:text-2xl font-semibold mb-8 relative inline-block">
           Rating & Reviews
